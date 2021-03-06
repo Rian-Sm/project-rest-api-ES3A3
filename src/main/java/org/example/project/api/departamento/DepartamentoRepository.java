@@ -21,6 +21,14 @@ public class DepartamentoRepository {
                 .findAny().orElse(null);
     }
 
+    public Departamento update (Departamento dep){
+        Departamento depFound = getDepartamentoByid(dep.getCodigo());
+        int index = departamentos.indexOf(depFound);
+        departamentos.set(index, dep);
+
+        return dep;
+    }
+
 
 
 

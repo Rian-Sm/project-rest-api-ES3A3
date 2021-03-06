@@ -48,4 +48,22 @@ public class DepartamentoResource {
         return Response.status(Status.OK).entity(new DepartamentoResponse(dep)).build();
     }
 
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") int codigo, DepartamentoRequest request){
+        Departamento dep = depRepository.getDepartamentoByid(codigo);
+        if (dep == null){
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
+        Departamento newDep = new Departamento(codigo, request.nome, request.sigla);
+        depRepository.update(newDep);
+
+        return Response.status(Status.OK).entity(newDep).build();
+
+    }
+
+
 }
