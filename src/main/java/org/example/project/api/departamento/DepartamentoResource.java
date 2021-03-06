@@ -1,9 +1,11 @@
 package org.example.project.api.departamento;
 
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import org.glassfish.grizzly.filterchain.RerunFilterAction;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +18,7 @@ public class DepartamentoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(DepartamentoRequest request){
+    public Response create(@Valid DepartamentoRequest request){
         Departamento dep = new Departamento(request.nome, request.sigla);
         depRepository.save(dep);
 
@@ -52,7 +54,7 @@ public class DepartamentoResource {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") int codigo, DepartamentoRequest request){
+    public Response update(@PathParam("id") int codigo,@Valid DepartamentoRequest request){
         Departamento dep = depRepository.getDepartamentoByid(codigo);
         if (dep == null){
             return Response.status(Status.NOT_FOUND).build();
@@ -65,5 +67,15 @@ public class DepartamentoResource {
 
     }
 
+    @DELETE
+    @Path("{id}")
+    public Response delete(@PathParam("id") int codigo){
+        Departamento dep = depRepository.getDepartamentoByid(codigo);
+        if(dep == null){
+            return Response.status(Status.NOT_FOUND).build();
+        }
 
+        depRepository.delete(dep);
+        return Response.status(Status.NO_CONTENT).build();
+    }
 }

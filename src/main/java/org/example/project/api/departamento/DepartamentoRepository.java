@@ -29,6 +29,10 @@ public class DepartamentoRepository {
         return dep;
     }
 
+    public void delete(Departamento dep){
+        departamentos.remove(dep);
+    }
+
 
 
 
