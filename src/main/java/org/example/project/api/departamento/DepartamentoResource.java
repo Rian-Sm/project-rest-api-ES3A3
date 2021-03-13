@@ -5,7 +5,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import org.glassfish.grizzly.filterchain.RerunFilterAction;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,7 +62,7 @@ public class DepartamentoResource {
         Departamento newDep = new Departamento(codigo, request.nome, request.sigla);
         depRepository.update(newDep);
 
-        return Response.status(Status.OK).entity(newDep).build();
+        return Response.status(Status.OK).entity(new DepartamentoResponse(newDep)).build();
 
     }
 
@@ -78,4 +77,5 @@ public class DepartamentoResource {
         depRepository.delete(dep);
         return Response.status(Status.NO_CONTENT).build();
     }
+
 }
